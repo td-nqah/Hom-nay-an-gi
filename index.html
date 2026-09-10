@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hôm Nay Ăn Gì?</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top, #18233a 0%, #080b12 45%, #05070b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: rgba(5, 8, 15, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #ffb52e;
+        }
+
+        .header-info {
+            color: #9ca8bb;
+            font-size: 14px;
+        }
+
+        /* ================= MAIN ================= */
+
+        main {
+            width: min(1200px, 92%);
+            margin: auto;
+            padding: 55px 0 80px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 6vw, 65px);
+            margin-bottom: 12px;
+        }
+
+        .hero h1 span {
+            color: #ffb52e;
+        }
+
+        .hero p {
+            color: #9da8ba;
+            font-size: 16px;
+        }
+
+        /* ================= CASE ================= */
+
+        .case-box {
+            position: relative;
+            background: rgba(13, 18, 29, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.5),
+                inset 0 0 50px rgba(255,181,46,0.02);
+        }
+
+        .roulette {
+            position: relative;
+            height: 210px;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #090c13;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* Vạch chính giữa */
+
+        .pointer {
+            position: absolute;
+            z-index: 10;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 100%;
+            background: #ffb52e;
+            box-shadow:
+                0 0 10px #ffb52e,
+                0 0 25px rgba(255,181,46,0.8);
+        }
+
+        .pointer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #ffb52e;
+        }
+
+        .pointer::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 15px solid #ffb52e;
+        }
+
+        .items-track {
+            position: absolute;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            left: 0;
+            top: 0;
+            will-change: transform;
+        }
+
+        .food-card {
+            flex: 0 0 165px;
+            height: 170px;
+            margin: 0 7px;
+            background: #111722;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .food-card img {
+            width: 100%;
+            height: 105px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .food-info {
+            padding: 8px 10px;
+        }
+
+        .food-name {
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .food-price {
+            margin-top: 4px;
+            color: #ffb52e;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .spin-area {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        #spinBtn {
+            border: none;
+            cursor: pointer;
+            padding: 16px 50px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, #ffcf58, #ff9f00);
+            color: #171006;
+            font-size: 17px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            box-shadow:
+                0 8px 25px rgba(255, 170, 20, 0.25);
+            transition: 0.2s;
+        }
+
+        #spinBtn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 12px 30px rgba(255, 170, 20, 0.4);
+        }
+
+        #spinBtn:active {
+            transform: scale(0.97);
+        }
+
+        #spinBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ================= RESULT ================= */
+
+        .result {
+            min-height: 90px;
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .result-title {
+            color: #8e9aaf;
+            font-size: 14px;
+        }
+
+        .result-name {
+            font-size: 30px;
+            font-weight: 900;
+            color: #ffb52e;
+            margin-top: 5px;
+        }
+
+        .result-price {
+            color: #d5dbea;
+            margin-top: 5px;
+        }
+
+        /* ================= FOOD LIST ================= */
+
+        .section-title {
+            margin-top: 55px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+        }
+
+        .food-count {
+            color: #7f8ba0;
+            font-size: 14px;
+        }
+
+        .food-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 16px;
+        }
+
+        .list-card {
+            background: rgba(16, 22, 34, 0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.2s;
+        }
+
+        .list-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,181,46,0.35);
+        }
+
+        .list-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+        }
+
+        .list-content {
+            padding: 13px;
+        }
+
+        .list-name {
+            font-weight: 700;
+        }
+
+        .list-price {
+            color: #ffb52e;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .delete-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 7px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255,70,70,0.1);
+            color: #ff7070;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255,70,70,0.2);
+        }
+
+        /* ================= ADD FOOD ================= */
+
+        .add-section {
+            margin-top: 45px;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(16,22,34,0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .add-section h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 180px 1.5fr auto;
+            gap: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 7px;
+            border: 1px solid #283246;
+            background: #0b101a;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #ffb52e;
+        }
+
+        .add-btn {
+            border: none;
+            padding: 0 22px;
+            border-radius: 7px;
+            background: #ffb52e;
+            color: #151006;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #ffd06b;
+        }
+
+        .hint {
+            margin-top: 12px;
+            color: #69758a;
+            font-size: 12px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 800px) {
+
+            .case-box {
+                padding: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .add-btn {
+                padding: 13px;
+            }
+
+            .roulette {
+                height: 190px;
+            }
+
+            .food-card {
+                flex-basis: 145px;
+                height: 155px;
+            }
+
+            .food-card img {
+                height: 95px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        🍜 HÔM NAY <span>ĂN GÌ?</span>
+    </div>
+
+    <div class="header-info">
+        🎲 Case Opening
+    </div>
+</header>
+
+
+<main>
+
+    <section class="hero">
+        <h1>Hôm nay <span>ăn gì?</span></h1>
+        <p>Mở hòm và để vận may quyết định bữa ăn của bạn.</p>
+    </section>
+
+
+    <!-- ================= CASE ================= -->
+
+    <section class="case-box">
+
+        <div class="roulette">
+
+            <div class="pointer"></div>
+
+            <div id="itemsTrack" class="items-track"></div>
+
+        </div>
+
+        <div class="spin-area">
+            <button id="spinBtn">
+                🎰 MỞ HÒM
+            </button>
+        </div>
+
+        <div class="result">
+
+            <div class="result-title">
+                KẾT QUẢ
+            </div>
+
+            <div id="resultName" class="result-name">
+                ?
+            </div>
+
+            <div id="resultPrice" class="result-price">
+                Hãy mở hòm để chọn món
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOD LIST ================= -->
+
+    <div class="section-title">
+        <h2>🍱 Hòm đồ của bạn</h2>
+        <div id="foodCount" class="food-count"></div>
+    </div>
+
+    <div id="foodList" class="food-list"></div>
+
+
+    <!-- ================= ADD FOOD ================= -->
+
+    <section class="add-section">
+
+        <h2>➕ Thêm món ăn</h2>
+
+        <div class="form-grid">
+
+            <input
+                id="foodName"
+                type="text"
+                placeholder="Tên món, ví dụ: Cơm tấm"
+            >
+
+            <input
+                id="foodPrice"
+                type="number"
+                placeholder="Giá (VNĐ)"
+            >
+
+            <input
+                id="foodImage"
+                type="text"
+                placeholder="URL hình ảnh"
+            >
+
+            <button class="add-btn" onclick="addFood()">
+                THÊM MÓN
+            </button>
+
+        </div>
+
+        <div class="hint">
+            💡 Có thể dùng link ảnh từ Internet. Ví dụ:
+            https://...
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+    /* =====================================================
+       DỮ LIỆU MÓN ĂN MẶC ĐỊNH
+       ===================================================== */
+
+    const defaultFoods = [
+
+        {
+            name: "Bún chả",
+            price: 40000,
+            image: "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Phở bò",
+            price: 50000,
+            image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Bánh mì",
+            price: 25000,
+            image: "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Cơm rang",
+            price: 40000,
+            image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Bún trộn",
+            price: 35000,
+            image: "https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Cơm tấm",
+            price: 45000,
+            image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Mì xào",
+            price: 35000,
+            image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Gà rán",
+            price: 55000,
+            image: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Kimbap",
+            price: 35000,
+            image: "https://images.unsplash.com/photo-1627308594190-a057cdab178c?auto=format&fit=crop&w=800&q=80"
+        },
+
+        {
+            name: "Pizza",
+            price: 80000,
+            image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
+        }
+
+    ];
+
+
+    /* =====================================================
+       LOAD DATA
+       ===================================================== */
+
+    let foods = JSON.parse(localStorage.getItem("foods"));
+
+    if (!foods || foods.length === 0) {
+        foods = defaultFoods;
+        saveFoods();
+    }
+
+
+    function saveFoods() {
+        localStorage.setItem("foods", JSON.stringify(foods));
+    }
+
+
+    /* =====================================================
+       FORMAT TIỀN
+       ===================================================== */
+
+    function formatPrice(price) {
+
+        return new Intl.NumberFormat("vi-VN").format(price) + "đ";
+
+    }
+
+
+    /* =====================================================
+       HIỂN THỊ DANH SÁCH
+       ===================================================== */
+
+    function renderFoodList() {
+
+        const list = document.getElementById("foodList");
+
+        list.innerHTML = "";
+
+        foods.forEach((food, index) => {
+
+            const card = document.createElement("div");
+
+            card.className = "list-card";
+
+            card.innerHTML = `
+
+                <img
+                    src="${food.image}"
+                    alt="${food.name}"
+                    onerror="this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80'"
+                >
+
+                <div class="list-content">
+
+                    <div class="list-name">
+                        ${food.name}
+                    </div>
+
+                    <div class="list-price">
+                        ${formatPrice(food.price)}
+                    </div>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteFood(${index})"
+                    >
+                        🗑 Xóa món
+                    </button>
+
+                </div>
+            `;
+
+            list.appendChild(card);
+
+        });
+
+        document.getElementById("foodCount").textContent =
+            `${foods.length} món`;
+
+    }
+
+
+    /* =====================================================
+       XÓA MÓN
+       ===================================================== */
+
+    function deleteFood(index) {
+
+        if (foods.length <= 2) {
+
+            alert("Cần ít nhất 2 món để mở hòm!");
+
+            return;
+        }
+
+        foods.splice(index, 1);
+
+        saveFoods();
+
+        renderFoodList();
+
+        createTrack();
+
+    }
+
+
+    /* =====================================================
+       THÊM MÓN
+       ===================================================== */
+
+    function addFood() {
+
+        const name =
+            document.getElementById("foodName").value.trim();
+
+        const price =
+            Number(document.getElementById("foodPrice").value);
+
+        const image =
+            document.getElementById("foodImage").value.trim();
+
+
+        if (!name) {
+
+            alert("Bạn chưa nhập tên món!");
+
+            return;
+        }
+
+
+        if (!price || price <= 0) {
+
+            alert("Giá món không hợp lệ!");
+
+            return;
+        }
+
+
+        foods.push({
+
+            name: name,
+
+            price: price,
+
+            image: image ||
+                "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80"
+
+        });
+
+
+        saveFoods();
+
+        renderFoodList();
+
+        createTrack();
+
+
+        document.getElementById("foodName").value = "";
+
+        document.getElementById("foodPrice").value = "";
+
+        document.getElementById("foodImage").value = "";
+
+    }
+
+
+    /* =====================================================
+       TẠO BĂNG QUAY
+       ===================================================== */
+
+    const track = document.getElementById("itemsTrack");
+
+    function createTrack() {
+
+        track.innerHTML = "";
+
+
+        /*
+            Nhân nhiều lần danh sách để tạo cảm giác
+            case opening chạy liên tục.
+        */
+
+        const repeatedFoods = [];
+
+        for (let i = 0; i < 12; i++) {
+
+            foods.forEach(food => {
+
+                repeatedFoods.push(food);
+
+            });
+
+        }
+
+
+        repeatedFoods.forEach(food => {
+
+            const card = document.createElement("div");
+
+            card.className = "food-card";
+
+            card.innerHTML = `
+
+                <img
+                    src="${food.image}"
+                    alt="${food.name}"
+                    onerror="this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80'"
+                >
+
+                <div class="food-info">
+
+                    <div class="food-name">
+                        ${food.name}
+                    </div>
+
+                    <div class="food-price">
+                        ${formatPrice(food.price)}
+                    </div>
+
+                </div>
+
+            `;
+
+            track.appendChild(card);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       RANDOM / CASE OPENING
+       ===================================================== */
+
+    let spinning = false;
+
+
+    function spin() {
+
+        if (spinning) return;
+
+        if (foods.length < 2) {
+
+            alert("Cần ít nhất 2 món!");
+
+            return;
+        }
+
+
+        spinning = true;
+
+        const button =
+            document.getElementById("spinBtn");
+
+        button.disabled = true;
+
+        button.textContent = "🎰 ĐANG MỞ...";
+
+
+        /*
+            Chọn món ngẫu nhiên.
+        */
+
+        const winnerIndex =
+            Math.floor(Math.random() * foods.length);
+
+        const winner =
+            foods[winnerIndex];
+
+
+        /*
+            Kích thước mỗi card.
+        */
+
+        const cardWidth = 179;
+
+
+        /*
+            Chúng ta đặt món thắng ở gần vị trí giữa.
+        */
+
+        const middleIndex =
+            foods.length * 7 + winnerIndex;
+
+
+        const rouletteWidth =
+            document.querySelector(".roulette").offsetWidth;
+
+
+        const center =
+            rouletteWidth / 2;
+
+
+        const target =
+            middleIndex * cardWidth +
+            82.5 -
+            center;
+
+
+        /*
+            Reset animation.
+        */
+
+        track.style.transition = "none";
+
+        track.style.transform = "translateX(0px)";
+
+        /*
+            Force browser reflow.
+        */
+
+        void track.offsetWidth;
+
+
+        /*
+            Quay nhiều vòng rồi dừng.
+        */
+
+        track.style.transition =
+            "transform 5s cubic-bezier(0.12, 0.8, 0.18, 1)";
+
+        track.style.transform =
+            `translateX(-${target}px)`;
+
+
+        /*
+            Hiển thị kết quả sau khi animation kết thúc.
+        */
+
+        setTimeout(() => {
+
+            document.getElementById("resultName")
+                .textContent = winner.name;
+
+            document.getElementById("resultPrice")
+                .textContent =
+                "💰 " + formatPrice(winner.price);
+
+
+            button.disabled = false;
+
+            button.textContent = "🎰 MỞ HÒM";
+
+            spinning = false;
+
+        }, 5100);
+
+    }
+
+
+    /* =====================================================
+       EVENT
+       ===================================================== */
+
+    document
+        .getElementById("spinBtn")
+        .addEventListener("click", spin);
+
+
+    /* =====================================================
+       KHỞI TẠO
+       ===================================================== */
+
+    renderFoodList();
+
+    createTrack();
+
+</script>
+
+</body>
+</html>
