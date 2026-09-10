@@ -431,93 +431,208 @@
 
 <script>
 
-    /* =====================================================
-       DỮ LIỆU MÓN ĂN MẶC ĐỊNH
-       ===================================================== */
-
+    // DỮ LIỆU MÓN ĂN
+    
     const defaultFoods = [
-
+        // Món 1
         {
             name: "Bún chả",
             price: 40000,
-            image: "https://vi.pngtree.com/freepng/delicious-authentic-hanoi-bun-cha_24200274.html"
+            image: "https://webreview.vn/images/items/408986.jpg"
         },
+        
+        // Món 2
         {
             name: "Nem nướng",
             price: 40000,
             image: "https://mia.vn/media/uploads/blog-du-lich/diem_ten_10_quan_nem_nuong_nha_trang_ngon_quen_loi_ve_1-1623088085.jpg"
         },
-
+        
+        // Món 3
         {
             name: "Phở bò",
             price: 50000,
             image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=800&q=80"
         },
 
+        // Món 4
         {
             name: "Cơm bình dân",
             price: 50000,
             image: "https://cdnphoto.dantri.com.vn/MPNr_Z9hEMd33G05hhc_Ry6gj9k=/thumb_w/1020/2022/09/29/quan-com-bui-o-pho-co-ha-noi-toan-vu-6-1664419609473.jpg"
         },
 
+        // Món 5 
         {
             name: "Cơm rang",
             price: 40000,
             image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80"
         },
-
+        
         {
-            name: "Bánh mì",
+            name: "Bánh mì Sài Gòn",
             price: 25000,
             image: "https://chefjob.vn/wp-content/uploads/2018/08/banh-mi-thit-sai-gon.jpg"
         },
-
+        
         {
             name: "Cơm tấm",
             price: 50000,
             image: "https://emdoi.vn/wp-content/uploads/2026/02/com-binh-dan-quan-6.jpg"
         },
-
+        
         {
             name: "Mì Udon",
             price: 45000,
             image: "https://png.pngtree.com/png-vector/20240719/ourmid/pngtree-japanese-tempura-udon-noodles-soup-png-image_12978511.png"
         },
-
+        
         {
             name: "Gà rán",
             price: 55000,
             image: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=800&q=80"
         },
-
+        
         {
             name: "Kimbap",
             price: 35000,
             image: "https://cdn.hstatic.net/products/200000825045/kimbap.jpg_74199693973940269b2bb43dbcaf8c8c.png"
         },
-
+        
         {
-            name: "Pizza",
-            price: 80000,
-            image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
-        }
+        name: "Pizza",
+        price: 80000,
+        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
+        },
+        
+        {
+            name: "Phở gà",
+            price: 35000,
+            image: "https://bigbowl.vn/wp-content/uploads/2025/07/240918-1-45-PHO-GA-TA-1-scaled.png"
+        },
+                
+        {
+            name: "Bún thang",
+            price: 50000,
+            image: "https://nhn.1cdn.vn/2023/10/22/1iaa35xp.png"
+        },
+                
+        {
+            name: "Bún riêu",
+            price: 40000,
+            image: "https://e7.pngegg.com/pngimages/1023/107/png-clipart-bun-bo-hu%E1%BA%BF-hue-vietnamese-cuisine-bun-rieu-pho-mid-autumn-moon-rabbit-food-recipe.png"
+        },
+                
+        {
+            name: "Bún ốc",
+            price: 40000,
+            image: "https://png.pngtree.com/png-vector/20210915/ourmid/pngtree-local-snack-snail-noodles-png-image_3931421.jpg"
+        },
+                
+        {
+            name: "Bún cá",
+            price: 30000,
+            image: "https://statics.vinpearl.com/bun-ca-ha-noi-1_1686916725.png"
+        },
+                
+        {
+            name: "Bún đậu mắm tôm",
+            price: 40000,
+            image: "https://png.pngtree.com/png-clipart/20240630/original/pngtree-bun-dau-mam-tom-a-culinary-experience-like-no-other-png-image_15450981.png"
+        },
+                
+        {
+            name: "Bún mọc",
+            price: 40000,
+            image: "https://i.pinimg.com/originals/8b/13/c5/8b13c5e8d33a6f61da4c552e8c28a409.png"
+        },
+                
+        {
+            name: "Bánh mì pate",
+            price: 20000,
+            image: "https://chefjob.vn/wp-content/uploads/2018/08/banh-mi-thit-sai-gon.jpg"
+        },
+                
+        {
+            name: "Bánh mì trứng",
+            price: 10000,
+            image: "https://anyscore.s3.ap-southeast-1.amazonaws.com/trung-thit-xa-xiu3101-1740756891.png"
+        },
+                
+        {
+            name: "Xôi xéo chả",
+            price: 25000,
+            image: "https://assets.xoimoc.com/responsive-images/lg/product-gallery/xoi-xeo-cha-ruoc/2.png"
+        },
+                        
+        {
+            name: "Phở cuốn",
+            price: 50000,
+            image: "https://img.mservice.com.vn/common/u/2e02fb5fe4f64fb55bc713540643c6f8eae702d101cea8c59afc49cfc505fc37/b04eee60-3217-415e-965c-327e1c439a443ziwwqty.jpeg"
+        },
+                
+        {
+            name: "Phở chiên phồng",
+            price: 55000,
+            image: "https://foodelivietnam.com/wp-content/uploads/2021/12/111.png"
+        },
+                
+        {
+            name: "Chả cá",
+            price: 60000,
+            image: "https://afamilycdn.com/150157425591193600/2024/8/3/photo-1-1722664340846648161624-1722667006694-1722667007148523849586.png"
+        },
+                           
+        {
+            name: "Bánh gối",
+            price: 25000,
+            image: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/164745/Originals/banh-goi-7.jpg"
+        },
+                        
+        {
+            name: "Nem chua rán",
+            price: 30000,
+            image: "https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/2/25/883480/Nem-Chua-Ran.png"
+        },
+                
+        {
+            name: "Bánh tráng trộn",
+            price: 20000,
+            image: "https://inviva.vn/wp-content/uploads/2026/04/banh-trang-tron-vector-04.png"
+        },
+                
+        {
+            name: "Bánh tráng nướng",
+            price: 25000,
+            image: "https://banhtrangdom.com/wp-content/uploads/2023/06/nuong-hoang-kim-300x300.png"
+        },
+        
+        {
+            name: "Mì cay",
+            price: 50000,
+            image: "https://micayseoul.com.vn/wp-content/uploads/2024/07/mi-tron-thap-cam-Photoroom.png"
+        },
+                
+        {
+            name: "Tokbokki",
+            price: 50000,
+            image: "https://png.pngtree.com/png-vector/20230906/ourmid/pngtree-tteokbokki-korean-food-png-image_9999294.png"
+        },
 
-    ];
+];
 
-
-    /* =====================================================
+    /*
        DỮ LIỆU HIỆN TẠI
        Danh sách món ăn lấy trực tiếp từ defaultFoods.
        Muốn cập nhật cho tất cả người dùng: sửa defaultFoods
        trên GitHub rồi Commit.
-       ===================================================== */
+     */
 
     const foods = defaultFoods;
 
 
-    /* =====================================================
-       FORMAT TIỀN
-       ===================================================== */
+    // FORMAT TIỀN
+
 
     function formatPrice(price) {
 
@@ -526,9 +641,7 @@
     }
 
 
-    /* =====================================================
-       HIỂN THỊ DANH SÁCH
-       ===================================================== */
+    // Hiển thị danh sách:
 
     function renderFoodList() {
 
@@ -574,9 +687,8 @@
     }
 
 
-    /* =====================================================
-       TẠO BĂNG QUAY
-       ===================================================== */
+    // TẠO BĂNG QUAY
+    
 
     const track = document.getElementById("itemsTrack");
 
@@ -733,9 +845,9 @@
             `translateX(-${target}px)`;
 
 
-        /*
-            Hiển thị kết quả sau khi animation kết thúc.
-        */
+    /*
+        Hiển thị kết quả sau khi animation kết thúc.
+    */
 
         setTimeout(() => {
 
@@ -757,19 +869,15 @@
 
     }
 
-
-    /* =====================================================
-       EVENT
-       ===================================================== */
+    // EVENT
 
     document
         .getElementById("spinBtn")
         .addEventListener("click", spin);
 
 
-    /* =====================================================
-       KHỞI TẠO
-       ===================================================== */
+    // KHỞI TẠO
+
 
     renderFoodList();
 
