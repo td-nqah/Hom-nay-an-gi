@@ -459,7 +459,7 @@
         {
             name: "Cơm bình dân",
             price: 50000,
-            image: "https://cdnphoto.dantri.com.vn/MPNr_Z9hEMd33G05hhc_Ry6gj9k=/thumb_w/1020/2022/09/29/quan-com-bui-o-pho-co-ha-noi-toan-vu-6-1664419609473.jpg"
+            image: "https://kenh14cdn.com/2018/7/28/hue-4-1532787050097862286516.png"
         },
 
         // Món 5 
@@ -500,9 +500,9 @@
         },
         
         {
-        name: "Pizza",
-        price: 80000,
-        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
+            name: "Pizza",
+            price: 80000,
+            image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
         },
         
         {
@@ -794,34 +794,30 @@
             Kích thước mỗi card.
         */
 
-        const cardWidth = 179;
-
-
-        /*
-            Chúng ta đặt món thắng ở gần vị trí giữa.
-        */
-
+        // Lấy đúng card thắng trên màn hình hiện tại
+        const roulette = document.querySelector(".roulette");
+        const rouletteWidth = roulette.offsetWidth;
+        
         const middleIndex =
             foods.length * 7 + winnerIndex;
-
-
-        const rouletteWidth =
-            document.querySelector(".roulette").offsetWidth;
-
-
-        const center =
-            rouletteWidth / 2;
-
-
+        
+        const cards =
+            track.querySelectorAll(".food-card");
+        
+        const winnerCard =
+            cards[middleIndex];
+        
+        // Tính tâm thực tế của card thắng
+        const cardCenter =
+            winnerCard.offsetLeft +
+            winnerCard.offsetWidth / 2;
+        
+        // Đưa tâm card thắng vào chính giữa vòng quay
         const target =
-            middleIndex * cardWidth +
-            82.5 -
-            center;
-
-
-        /*
-            Reset animation.
-        */
+            cardCenter -
+            rouletteWidth / 2;
+        
+        // Reset animation
 
         track.style.transition = "none";
 
