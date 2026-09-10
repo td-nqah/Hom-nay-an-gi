@@ -324,60 +324,6 @@
             background: rgba(255,70,70,0.2);
         }
 
-        /* ================= ADD FOOD ================= */
-
-        .add-section {
-            margin-top: 45px;
-            padding: 25px;
-            border-radius: 15px;
-            background: rgba(16,22,34,0.8);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .add-section h2 {
-            margin-bottom: 20px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 180px 1.5fr auto;
-            gap: 10px;
-        }
-
-        input {
-            width: 100%;
-            padding: 13px;
-            border-radius: 7px;
-            border: 1px solid #283246;
-            background: #0b101a;
-            color: white;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #ffb52e;
-        }
-
-        .add-btn {
-            border: none;
-            padding: 0 22px;
-            border-radius: 7px;
-            background: #ffb52e;
-            color: #151006;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .add-btn:hover {
-            background: #ffd06b;
-        }
-
-        .hint {
-            margin-top: 12px;
-            color: #69758a;
-            font-size: 12px;
-        }
-
         /* ================= MOBILE ================= */
 
         @media (max-width: 800px) {
@@ -471,51 +417,14 @@
     <!-- ================= FOOD LIST ================= -->
 
     <div class="section-title">
-        <h2>🍱 Hòm đồ của bạn</h2>
+        <h2>🍱 Danh sách món ăn</h2>
         <div id="foodCount" class="food-count"></div>
     </div>
 
     <div id="foodList" class="food-list"></div>
 
 
-    <!-- ================= ADD FOOD ================= -->
 
-    <section class="add-section">
-
-        <h2>➕ Thêm món ăn</h2>
-
-        <div class="form-grid">
-
-            <input
-                id="foodName"
-                type="text"
-                placeholder="Tên món, ví dụ: Cơm tấm"
-            >
-
-            <input
-                id="foodPrice"
-                type="number"
-                placeholder="Giá (VNĐ)"
-            >
-
-            <input
-                id="foodImage"
-                type="text"
-                placeholder="URL hình ảnh"
-            >
-
-            <button class="add-btn" onclick="addFood()">
-                THÊM MÓN
-            </button>
-
-        </div>
-
-        <div class="hint">
-            💡 Có thể dùng link ảnh từ Internet. Ví dụ:
-            https://...
-        </div>
-
-    </section>
 
 </main>
 
@@ -536,7 +445,7 @@
         {
             name: "Nem nướng",
             price: 40000,
-            image: "https://shopeefood.vn/ha-noi/nem-nuong-hoang-gia-nem-nuong-nha-trang-so-216-dinh-cong-ha-dinh-cong-hoang-mai-ha-noi.16a1so?source_url=foody_ordernow_mobile"
+            image: "https://mia.vn/media/uploads/blog-du-lich/diem_ten_10_quan_nem_nuong_nha_trang_ngon_quen_loi_ve_1-1623088085.jpg"
         },
 
         {
@@ -597,20 +506,13 @@
 
 
     /* =====================================================
-       LOAD DATA
+       DỮ LIỆU HIỆN TẠI
+       Danh sách món ăn lấy trực tiếp từ defaultFoods.
+       Muốn cập nhật cho tất cả người dùng: sửa defaultFoods
+       trên GitHub rồi Commit.
        ===================================================== */
 
-    let foods = JSON.parse(localStorage.getItem("foods"));
-
-    if (!foods || foods.length === 0) {
-        foods = defaultFoods;
-        saveFoods();
-    }
-
-
-    function saveFoods() {
-        localStorage.setItem("foods", JSON.stringify(foods));
-    }
+    const foods = defaultFoods;
 
 
     /* =====================================================
@@ -634,7 +536,7 @@
 
         list.innerHTML = "";
 
-        foods.forEach((food, index) => {
+        foods.forEach((food) => {
 
             const card = document.createElement("div");
 
@@ -658,12 +560,6 @@
                         ${formatPrice(food.price)}
                     </div>
 
-                    <button
-                        class="delete-btn"
-                        onclick="deleteFood(${index})"
-                    >
-                        🗑 Xóa món
-                    </button>
 
                 </div>
             `;
@@ -674,90 +570,6 @@
 
         document.getElementById("foodCount").textContent =
             `${foods.length} món`;
-
-    }
-
-
-    /* =====================================================
-       XÓA MÓN
-       ===================================================== */
-
-    function deleteFood(index) {
-
-        if (foods.length <= 2) {
-
-            alert("Cần ít nhất 2 món để mở hòm!");
-
-            return;
-        }
-
-        foods.splice(index, 1);
-
-        saveFoods();
-
-        renderFoodList();
-
-        createTrack();
-
-    }
-
-
-    /* =====================================================
-       THÊM MÓN
-       ===================================================== */
-
-    function addFood() {
-
-        const name =
-            document.getElementById("foodName").value.trim();
-
-        const price =
-            Number(document.getElementById("foodPrice").value);
-
-        const image =
-            document.getElementById("foodImage").value.trim();
-
-
-        if (!name) {
-
-            alert("Bạn chưa nhập tên món!");
-
-            return;
-        }
-
-
-        if (!price || price <= 0) {
-
-            alert("Giá món không hợp lệ!");
-
-            return;
-        }
-
-
-        foods.push({
-
-            name: name,
-
-            price: price,
-
-            image: image ||
-                "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80"
-
-        });
-
-
-        saveFoods();
-
-        renderFoodList();
-
-        createTrack();
-
-
-        document.getElementById("foodName").value = "";
-
-        document.getElementById("foodPrice").value = "";
-
-        document.getElementById("foodImage").value = "";
 
     }
 
